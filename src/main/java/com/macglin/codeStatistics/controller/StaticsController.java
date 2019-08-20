@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ public class StaticsController {
         return "hello";
     }
 
-    @RequestMapping("/upload")
+    @RequestMapping("/uploadtest")
     public void upload(MultipartFile file, HttpServletRequest request){
         try {
             MultipartFile file1 = file;
