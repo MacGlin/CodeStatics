@@ -26,7 +26,8 @@ public class FileUploadaController {
     int emptyNum;
     //实际代码行数
     int codeNum;
-
+    //上传文件路径
+    String nFilePath = null;
     @RequestMapping("/")
     public String index(){
         return "index";
@@ -42,14 +43,8 @@ public class FileUploadaController {
             byte[] bytes = file.getBytes();
             Path path = Paths.get("D:\\fileUpload/" + file.getOriginalFilename());
             Files.write(path,bytes);
-            File nFile = new File("D:\\fileUpload\\" + file.getOriginalFilename());
-            parse(nFile);
-            String message = "解析成功" +
-                    "文件名为" + file.getOriginalFilename() +
-                    "代码总行数为" + totalNum +
-                    "注释行数为" + commentNum +
-                    "空行为" + emptyNum +
-                    "实际代码行数为" + codeNum;
+            nFilePath = "D:\\fileUpload\\" + file.getOriginalFilename();
+            String message = "解析成功";
             model.addAttribute("message",message);
         }catch (Exception e){
             e.printStackTrace();
@@ -57,7 +52,9 @@ public class FileUploadaController {
         return "/index";
     }
 
-    public String parse(File nFile){
+    @PostMapping("/parse")
+    public String parse(Model model){
+        File nFile = new File(nFilePath);
         try {
             BufferedReader bf = new BufferedReader(new FileReader(nFile));
             Stream<String> lines = bf.lines();
@@ -70,11 +67,14 @@ public class FileUploadaController {
                 }
                 lineParse(s);
             });
-
+            model.addAttribute("result","代码总行数为" + totalNum +
+                    "注释行数为" + commentNum +
+                    "空行数为" + emptyNum +
+                    "实际代码行数为" + codeNum);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+        return "index";
     }
 
     /**
