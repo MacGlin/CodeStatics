@@ -10,8 +10,14 @@
     <button type="submit">上传</button>
 </form>
 <div>
-    <p>解析结果:</p>
-    <textarea cols="80" rows="4" th:text="${message}"></textarea>
+    <textarea cols="80" rows="1" th:text="${message}"></textarea>
+</div>
+<form action="/parse" method="post" enctype="multipart/form-data">
+    <button type="submit">解析</button>
+</form>
+<div>
+    <p>分析结果</p>
+    <textarea cols="80" rows="4" th:text="${result}"></textarea>
 </div>
 </body>
 </html>
