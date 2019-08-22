@@ -54,7 +54,7 @@ public class FileUploadaController {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "/uploadStatus";
+        return "/index";
     }
 
     public String parse(File nFile){
