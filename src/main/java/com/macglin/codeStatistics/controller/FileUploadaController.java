@@ -2,9 +2,7 @@ package com.macglin.codeStatistics.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.apache.commons.lang.StringUtils;
 
@@ -27,7 +25,7 @@ public class FileUploadaController {
     //实际代码行数
     int codeNum;
     //上传文件路径
-    String nFilePath = null;
+    public static String nFilePath = null;
     @RequestMapping("/")
     public String index(){
         return "index";
@@ -44,7 +42,7 @@ public class FileUploadaController {
             Path path = Paths.get("D:\\fileUpload/" + file.getOriginalFilename());
             Files.write(path,bytes);
             nFilePath = "D:\\fileUpload\\" + file.getOriginalFilename();
-            String message = "解析成功";
+            String message = "上传成功";
             model.addAttribute("message",message);
         }catch (Exception e){
             e.printStackTrace();
@@ -53,7 +51,8 @@ public class FileUploadaController {
     }
 
     @PostMapping("/parse")
-    public String parse(Model model){
+    @ResponseBody
+    public String parse(){
         File nFile = new File(nFilePath);
         try {
             BufferedReader bf = new BufferedReader(new FileReader(nFile));
@@ -67,14 +66,15 @@ public class FileUploadaController {
                 }
                 lineParse(s);
             });
-            model.addAttribute("result","代码总行数为" + totalNum +
+            String result = "result,代码总行数为" + totalNum +
                     "注释行数为" + commentNum +
                     "空行数为" + emptyNum +
-                    "实际代码行数为" + codeNum);
+                    "实际代码行数为" + codeNum;
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "index";
+        return null;
     }
 
     /**

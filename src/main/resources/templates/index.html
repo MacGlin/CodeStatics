@@ -12,12 +12,22 @@
 <div>
     <textarea cols="80" rows="1" th:text="${message}"></textarea>
 </div>
-<form action="/parse" method="post" enctype="multipart/form-data">
-    <button type="submit">解析</button>
-</form>
+
+<p><button id="parse">解析</button></p>
 <div>
     <p>分析结果</p>
-    <textarea cols="80" rows="4" th:text="${result}"></textarea>
+    <textarea id="tx" cols="80" rows="4"></textarea>
 </div>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+        $(document).ready(function(){
+            $("#parse").click(function(){
+                $.post("/parse",function(data,status){
+                    $("#tx").text(data);
+                });
+            });
+        });
+</script>
 </body>
 </html>
